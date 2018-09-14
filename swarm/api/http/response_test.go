@@ -29,7 +29,7 @@ import (
 )
 
 func TestError(t *testing.T) {
-	srv := testutil.NewTestSwarmServer(t, serverFunc)
+	srv := testutil.NewTestSwarmServer(t, serverFunc, nil)
 	defer srv.Close()
 
 	var resp *http.Response
@@ -44,7 +44,7 @@ func TestError(t *testing.T) {
 	defer resp.Body.Close()
 	respbody, err = ioutil.ReadAll(resp.Body)
 
-	if resp.StatusCode != 400 && !strings.Contains(string(respbody), "Invalid URI &#34;/this_should_fail_as_no_bzz_protocol_present&#34;: unknown scheme") {
+	if resp.StatusCode != 404 && !strings.Contains(string(respbody), "Invalid URI &#34;/this_should_fail_as_no_bzz_protocol_present&#34;: unknown scheme") {
 		t.Fatalf("Response body does not match, expected: %v, to contain: %v; received code %d, expected code: %d", string(respbody), "Invalid bzz URI: unknown scheme", 400, resp.StatusCode)
 	}
 
@@ -55,7 +55,7 @@ func TestError(t *testing.T) {
 }
 
 func Test404Page(t *testing.T) {
-	srv := testutil.NewTestSwarmServer(t, serverFunc)
+	srv := testutil.NewTestSwarmServer(t, serverFunc, nil)
 	defer srv.Close()
 
 	var resp *http.Response
@@ -81,7 +81,7 @@ func Test404Page(t *testing.T) {
 }
 
 func Test500Page(t *testing.T) {
-	srv := testutil.NewTestSwarmServer(t, serverFunc)
+	srv := testutil.NewTestSwarmServer(t, serverFunc, nil)
 	defer srv.Close()
 
 	var resp *http.Response
@@ -106,7 +106,7 @@ func Test500Page(t *testing.T) {
 	}
 }
 func Test500PageWith0xHashPrefix(t *testing.T) {
-	srv := testutil.NewTestSwarmServer(t, serverFunc)
+	srv := testutil.NewTestSwarmServer(t, serverFunc, nil)
 	defer srv.Close()
 
 	var resp *http.Response
@@ -136,7 +136,7 @@ func Test500PageWith0xHashPrefix(t *testing.T) {
 }
 
 func TestJsonResponse(t *testing.T) {
-	srv := testutil.NewTestSwarmServer(t, serverFunc)
+	srv := testutil.NewTestSwarmServer(t, serverFunc, nil)
 	defer srv.Close()
 
 	var resp *http.Response
